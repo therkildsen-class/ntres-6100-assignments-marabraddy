@@ -3,17 +3,17 @@ Mara
 
 ## Instructions: Please read through this before you begin
 
-- This assignment is due by **10pm on Thursday 09/04/2025**.
+- This assignment is due by **10pm on Thursday 09/04/2025**.
 
-- For this assignment, please **reproduce this markdown file exactly as
-  shown** using Quarto (including this list of instructions). You
-  do**NOT** need to fill out the code chunks (i.e. answer the questions)
+- For this assignment, please **reproduce this markdown file exactly as
+  shown** using Quarto (including this list of instructions). You do
+  **NOT** need to fill out the code chunks (i.e. answer the questions)
   for this assignment. We are just practicing markdown formatting right
   now.
 
-- Please name your Quarto file `assignment_1.qmd`
+- Please name your Quarto file `assignment_1.qmd`
 
-- Set the output format to `gfm` to produce the correct `.md` file for
+- Set the output format to `gfm` to produce the correct `.md` file for
   github rendering.
 
 - Pay attention to all the formatting in this file, including bullet
@@ -26,13 +26,12 @@ Mara
 - You will have to submit your assignment through GitHub. You can
   complete your template after Thursday’s class, but don’t worry about
   submitting it until after we have gone over how to submit it through
-  GitHub in next Tuesday’s class. To do so, you will first
-  move `assignment_1.qmd` and `assignment_1.md` to
-  the `problem_sets` folder in your own GitHub repository that you have
-  created in class through GitHub Classroom. (If you haven’t created
-  this repo yet, please use the following
-  url:<https://classroom.github.com/a/StaRJQLV>). Then, you can stage
-  these files, make a commit, and push the commit.
+  GitHub in next Tuesday’s class. To do so, you will first move
+  `assignment_1.qmd` and `assignment_1.md` to the `problem_sets` folder
+  in your own GitHub repository that you have created in class through
+  GitHub Classroom. (If you haven’t created this repo yet, please use
+  the following url:<https://classroom.github.com/a/StaRJQLV>). Then,
+  you can stage these files, make a commit, and push the commit.
 
 ## Load packages
 
@@ -168,9 +167,9 @@ through RMarkdown **using the kable() function**, as shown above.
 
 #### 2.6 Find the mean `conc` and sum of the `Dose` received by each test subject.
 
-Show data for the 6 subjects with the smallest sum of `Dose` as
-below. **Do not define new intermediate objects for this exercise; use
-pipes to chain together functions.**
+Show data for the 6 subjects with the smallest sum of `Dose` as below.
+**Do not define new intermediate objects for this exercise; use pipes to
+chain together functions.**
 
 ``` r
 ```
