@@ -12,7 +12,7 @@ Please use the following table to grade the student's assignment:
 
 | Assignment# | Fully completed | Partially completed | Not completed |
 |:-----------:|:---------------:|:-------------------:|:-------------:|
-|      1      |                 |                     |               |
+|      1      |        X         |                     |               |
 |      2      |                 |                     |               |
 |      3      |                 |                     |               |
 |      4      |                 |                     |               |
