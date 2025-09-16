@@ -21,3 +21,9 @@ Please use the following table to grade the student's assignment:
 |      7      |                 |                     |               |
 |      8      |                 |                     |               |
 |      9      |                 |                     |               |
+
+Assignment 1:
+
+Assignment 2:
+
+Assignment 3:
