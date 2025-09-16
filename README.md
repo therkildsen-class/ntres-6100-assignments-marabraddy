@@ -24,6 +24,6 @@ Please use the following table to grade the student's assignment:
 
 Assignment 1:
 
-Assignment 2:
+Assignment 2: created a repo called "agroforestry_project"
 
 Assignment 3:
