@@ -33,7 +33,15 @@ filter(coronavirus, country %in% c("US", "Canada")) # included
 filter(coronavirus, country == "US" & type == "death") # ampersand and comma are equivalent
 filter(coronavirus, country == "US", type == "death") # ampersand and comma are equivalent
 
+# exercise: Subset the data to only show the death counts in three European countries on today’s date in 2021.
 filter(coronavirus, country %in% c("United Kingdom", "France", "Spain"), type == "death", date == "2021-09-16")
 
+View(count(coronavirus, country))
+select(coronavirus, date, country, type, cases)
+select(coronavirus, -province)
 
+select(coronavirus, country, lat, long)
+select(coronavirus, date:cases)
+
+select(coronavirus, 1:3)
 
