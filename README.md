@@ -22,8 +22,9 @@ Please use the following table to grade the student's assignment:
 |      8      |                 |                     |               |
 |      9      |                 |                     |               |
 
-Assignment 1:
 
 Assignment 2: created a repo called "agroforestry_project"
 
-Assignment 3:
+Assignment 3: 
+  -Website: https://marabraddy.github.io/assignment-3-meb448/
+  -Repo: https://github.com/marabraddy/assignment-3-meb448
