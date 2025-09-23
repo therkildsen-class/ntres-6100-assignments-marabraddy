@@ -150,7 +150,25 @@ ggplot(data = economist_data) +
 
 #### 1.10 Show the distribution of `HDI` in each region using histogram and faceting.
 
+``` r
+ggplot(data = economist_data) +
+  geom_histogram(mapping = aes(fill = Region, x = HDI)) +
+  facet_wrap(~ Region)
+```
+
+    `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](Assignment_4_files/figure-commonmark/unnamed-chunk-12-1.png)
+
 #### 1.11 Show the distribution of `HDI` in each region using a box plot. Set the transparency of these boxes to 0.5 and do not show outlier points with the box plot. Instead, show all data points for each country in the same plot. (Hint: `geom_jitter()` or `position_jitter()` might be useful.)
+
+``` r
+ggplot(data = economist_data, mapping = aes(x = Region, y = HDI, color = Region)) +
+  geom_jitter(width = 0.2, alpha = 0.7) +
+  geom_boxplot(alpha = 0.5, outlier.shape = NA)
+```
+
+![](Assignment_4_files/figure-commonmark/unnamed-chunk-13-1.png)
 
 #### 1.12 Show the count of countries in each region using a bar plot.
 
