@@ -8,6 +8,20 @@ Install them if they are not installed yet.
 
 ``` r
 library(tidyverse)
+```
+
+    ── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+    ✔ dplyr     1.1.4     ✔ readr     2.1.5
+    ✔ forcats   1.0.0     ✔ stringr   1.5.1
+    ✔ ggplot2   3.5.2     ✔ tibble    3.3.0
+    ✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+    ✔ purrr     1.1.0     
+    ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+    ✖ dplyr::filter() masks stats::filter()
+    ✖ dplyr::lag()    masks stats::lag()
+    ℹ Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+
+``` r
 library(knitr)
 ```
 
@@ -27,71 +41,118 @@ First, we load the data using the following code.
 economist_data <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/EconomistData.csv")
 ```
 
+    New names:
+    Rows: 173 Columns: 6
+    ── Column specification
+    ──────────────────────────────────────────────────────── Delimiter: "," chr
+    (2): Country, Region dbl (4): ...1, HDI.Rank, HDI, CPI
+    ℹ Use `spec()` to retrieve the full column specification for this data. ℹ
+    Specify the column types or set `show_col_types = FALSE` to quiet this message.
+    • `` -> `...1`
+
 #### 1.1 Show the first few rows of (`economist_data`).
 
 ``` r
 head(economist_data)
-
-#| label: tbl-LABEL
-#| tbl-cap: CAPTION
-
-knitr::kable(head(economist_data))
 ```
+
+    # A tibble: 6 × 6
+       ...1 Country     HDI.Rank   HDI   CPI Region           
+      <dbl> <chr>          <dbl> <dbl> <dbl> <chr>            
+    1     1 Afghanistan      172 0.398   1.5 Asia Pacific     
+    2     2 Albania           70 0.739   3.1 East EU Cemt Asia
+    3     3 Algeria           96 0.698   2.9 MENA             
+    4     4 Angola           148 0.486   2   SSA              
+    5     5 Argentina         45 0.797   3   Americas         
+    6     6 Armenia           86 0.716   2.6 East EU Cemt Asia
 
 #### 1.2 Explore the relationship between human development index (`HDI`) and corruption perception index (`CPI`) with a scatter plot as the following.
 
 ``` r
+ggplot(data = economist_data) +
+  geom_point(mapping = aes(x = CPI, y = HDI))
 ```
+
+![](Assignment_4_files/figure-commonmark/unnamed-chunk-4-1.png)
 
 #### 1.3 Make the color of all points in the previous plot red.
 
 ``` r
+ggplot(data = economist_data) +
+  geom_point(mapping = aes(x = CPI, y = HDI), color = "red")
 ```
+
+![](Assignment_4_files/figure-commonmark/unnamed-chunk-5-1.png)
 
 #### 1.4 Color the points in the previous plot according to the `Region` variable, and set the size of points to 2.
 
 ``` r
+ggplot(data = economist_data) +
+  geom_point(mapping = aes(x = CPI, y = HDI, color = Region, size = 2))
 ```
+
+![](Assignment_4_files/figure-commonmark/unnamed-chunk-6-1.png)
 
 #### 1.5 Set the size of the points proportional to `HDI.Rank`
 
 ``` r
+ggplot(data = economist_data) +
+  geom_point(mapping = aes(x = CPI, y = HDI, color = Region, size = HDI.Rank))
 ```
+
+![](Assignment_4_files/figure-commonmark/unnamed-chunk-7-1.png)
 
 #### 1.6 Fit a **smoothing line** to **all** the data points in the scatter plot from Exercise 1.4.
 
 ``` r
+ggplot(data = economist_data) +
+  geom_point(mapping = aes(x = CPI, y = HDI, color = Region, size = 2)) +
+  geom_smooth(mapping = aes(x = CPI, y = HDI))
 ```
+
+    `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+
+![](Assignment_4_files/figure-commonmark/unnamed-chunk-8-1.png)
 
 #### 1.7 Fit a separate **straight line** for **each region** instead, and turn off the confidence interval.
 
 ``` r
+ggplot(data = economist_data, mapping = aes(x = CPI, y = HDI, color = Region)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = F)
 ```
+
+    `geom_smooth()` using formula = 'y ~ x'
+
+![](Assignment_4_files/figure-commonmark/unnamed-chunk-9-1.png)
 
 #### 1.8 Building on top of the previous plot, show each `Region` in a different facet.
 
 ``` r
+ggplot(data = economist_data, mapping = aes(x = CPI, y = HDI, color = Region)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = F) +
+  facet_wrap(~ Region)
 ```
+
+    `geom_smooth()` using formula = 'y ~ x'
+
+![](Assignment_4_files/figure-commonmark/unnamed-chunk-10-1.png)
 
 #### 1.9 Show the distribution of `HDI` in each region using density plot. Set the transparency to 0.5.
 
 ``` r
+ggplot(data = economist_data) +
+  geom_density(mapping = aes(fill = Region, x = HDI), alpha = 0.5)
 ```
+
+![](Assignment_4_files/figure-commonmark/unnamed-chunk-11-1.png)
 
 #### 1.10 Show the distribution of `HDI` in each region using histogram and faceting.
 
-``` r
-```
-
 #### 1.11 Show the distribution of `HDI` in each region using a box plot. Set the transparency of these boxes to 0.5 and do not show outlier points with the box plot. Instead, show all data points for each country in the same plot. (Hint: `geom_jitter()` or `position_jitter()` might be useful.)
 
-``` r
-```
-
 #### 1.12 Show the count of countries in each region using a bar plot.
-
-``` r
-```
 
 #### 1.13 You have now created a variety of different plots of the same dataset. Which of your plots do you think are the most informative? Describe briefly the major trends that you see in the data.
 
@@ -108,9 +169,6 @@ hours. You can learn more about this dataset by running `?Theoph`
 
 Have a look at the data structure.
 
-``` r
-```
-
 For the following exercise, **transform the data as instructed**. Try to
 use `tidyverse` functions even if you are more comfortable with base-R
 solutions. Show the **first 6 lines** of the transformed data in a table
@@ -118,37 +176,19 @@ through RMarkdown **using the kable() function**, as shown above.
 
 #### 2.1 Select columns that contain a lower case “t” in the `Theoph` dataset. Do not manually list all the columns to include.
 
-``` r
-```
-
 #### 2.2 Rename the `Wt` column to `Weight` and `conc` column to `Concentration` in the `Theoph` dataset.
-
-``` r
-```
 
 #### 2.3 Extract the `Dose` greater than 4.5 and `Time` greater than the mean `Time`.
 
-``` r
-```
-
 #### 2.4 Sort the `Theoph` dataset by `Wt` from smallest to largest and secondarily by Time from largest to smallest.
 
-``` r
-```
-
 #### 2.5 Create a new column called `Quantity` that equals to `Wt` x `Dose` in the `Theoph` dataset. This will tell you the absolute quantity of drug administered to the subject (in mg). Replace the `Dose` variable with `Quantity`.
-
-``` r
-```
 
 #### 2.6 Find the mean `conc` and sum of the `Dose` received by each test subject.
 
 Show data for the 6 subjects with the smallest sum of `Dose` as below.
 **Do not define new intermediate objects for this exercise; use pipes to
 chain together functions.**
-
-``` r
-```
 
 ## Exercise 3. Unemployment in the US 1967-2015 (OPTIONAL)
 
@@ -173,10 +213,4 @@ head(economics) %>% kable()
 
 #### 3.1 Plot the trend in number of unemployed persons (`unemploy`) though time using the economics dataset shown above. And for this question only, **hide your code and only show the plot**.
 
-``` r
-```
-
 #### 3.2 Edit the plot title and axis labels of the previous plot appropriately. Make y axis start from 0. Change the background theme to what is shown below. (Hint: search for help online if needed)
-
-``` r
-```
