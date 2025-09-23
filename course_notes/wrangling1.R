@@ -69,7 +69,7 @@ coronavirus |>
 
 
   
-  # Vaccine data ----------------------
+# Vaccine data ----------------------
 vacc <- read_csv("https://raw.githubusercontent.com/RamiKrispin/coronavirus/main/csv/covid19_vaccine.csv")
 View(vacc)
 
@@ -110,4 +110,16 @@ vacc |>
   filter(vaxxrate > 0.9) |> 
   arrange(-vaxxrate) |> 
   head()
-    
+
+# Summarize ----------------------------
+
+coronavirus |> 
+  filter(type == "confirmed") |> # only reading the date where the 'type' = 'confirmed'
+  summarize(sum = sum(cases)) # 'sum' is just a name. could also be 'total'
+
+ # getting a summary of confirmed cases by country
+coronavirus |> 
+  filter(type == "confirmed") |> 
+  group_by(country) |> 
+  summarize(total = mean(cases)) |> 
+  arrange(-total)
