@@ -172,6 +172,13 @@ ggplot(data = economist_data, mapping = aes(x = Region, y = HDI, color = Region)
 
 #### 1.12 Show the count of countries in each region using a bar plot.
 
+``` r
+ggplot(data = economist_data, mapping = aes(Region)) +
+  geom_bar()
+```
+
+![](Assignment_4_files/figure-commonmark/unnamed-chunk-14-1.png)
+
 #### 1.13 You have now created a variety of different plots of the same dataset. Which of your plots do you think are the most informative? Describe briefly the major trends that you see in the data.
 
 Answer: *Write your response here*.
