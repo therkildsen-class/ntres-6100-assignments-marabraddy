@@ -23,11 +23,20 @@ table_rate <- table1 |>
 
 # Pivot functions---------------------
 
+ # pivot_longer
 table4a |> 
   pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "cases")
 
 table4b |> 
   pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "population")
+
+table4a_tidy <- table4a |> # to store the new table we've created
+  pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "cases")
+
+
+ #pivot_wider
+table2 |> 
+  pivot_wider(names_from = type, values_from = count)
 
 
 
