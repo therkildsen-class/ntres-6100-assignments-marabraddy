@@ -23,6 +23,7 @@ library(tidyverse)
 
 ``` r
 library(knitr)
+library(dplyr)
 ```
 
 ## Exercise 1: Corruption and human development
@@ -194,6 +195,19 @@ hours. You can learn more about this dataset by running `?Theoph`
 
 Have a look at the data structure.
 
+``` r
+kable(head(Theoph))
+```
+
+| Subject |   Wt | Dose | Time |  conc |
+|:--------|-----:|-----:|-----:|------:|
+| 1       | 79.6 | 4.02 | 0.00 |  0.74 |
+| 1       | 79.6 | 4.02 | 0.25 |  2.84 |
+| 1       | 79.6 | 4.02 | 0.57 |  6.57 |
+| 1       | 79.6 | 4.02 | 1.12 | 10.50 |
+| 1       | 79.6 | 4.02 | 2.02 |  9.66 |
+| 1       | 79.6 | 4.02 | 3.82 |  8.58 |
+
 For the following exercise, **transform the data as instructed**. Try to
 use `tidyverse` functions even if you are more comfortable with base-R
 solutions. Show the **first 6 lines** of the transformed data in a table
@@ -201,9 +215,41 @@ through RMarkdown **using the kable() function**, as shown above.
 
 #### 2.1 Select columns that contain a lower case “t” in the `Theoph` dataset. Do not manually list all the columns to include.
 
+``` r
+select(Theoph, Wt) |> 
+  head()
+```
+
+        Wt
+    1 79.6
+    2 79.6
+    3 79.6
+    4 79.6
+    5 79.6
+    6 79.6
+
 #### 2.2 Rename the `Wt` column to `Weight` and `conc` column to `Concentration` in the `Theoph` dataset.
 
+``` r
+Theoph_data <- Theoph |> 
+rename(Weight = Wt, Concentration = conc)
+```
+
 #### 2.3 Extract the `Dose` greater than 4.5 and `Time` greater than the mean `Time`.
+
+``` r
+Theoph_data |>
+  group_by(Dose, Time) |> 
+  summarize(mean_Time = mean(Time)) |> 
+  filter(Time > mean_Time)
+```
+
+    `summarise()` has grouped output by 'Dose'. You can override using the
+    `.groups` argument.
+
+    # A tibble: 0 × 3
+    # Groups:   Dose [0]
+    # ℹ 3 variables: Dose <dbl>, Time <dbl>, mean_Time <dbl>
 
 #### 2.4 Sort the `Theoph` dataset by `Wt` from smallest to largest and secondarily by Time from largest to smallest.
 

@@ -34,13 +34,27 @@ table4a_tidy <- table4a |> # to store the new table we've created
   pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "cases")
 
 
- #pivot_wider
+ # pivot_wider
 table2 |> 
   pivot_wider(names_from = type, values_from = count)
 
 
+table3 |> 
+  separate(rate, into = c("cases", "population"), sep = "/", convert = TRUE)
+
+table3 |> 
+  separate(year, into = c("century", "year"), sep = 1)
+
+table5 <- table3 |> 
+  separate(year, into = c("century", "year"), sep = 2)
+
+table5 |> 
+  unite(fullyear, century, year, sep = "")
 
 
+
+coronavirus <- read_csv('https://raw.githubusercontent.com/RamiKrispin/coronavirus/master/csv/coronavirus.csv')
+View(coronavirus)
 
 
 
