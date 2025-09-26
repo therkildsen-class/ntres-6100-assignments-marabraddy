@@ -179,28 +179,9 @@ Theoph |>
 ```{r}
 Theoph |>
   group_by(conc, Dose) |> 
-  summarize(mean_conc = mean(conc), sum_dose = sum(dose))
+  summarize(mean_conc = mean(conc), sum_dose = sum(Dose))
 ```
 
 Show data for the 6 subjects with the smallest sum of `Dose` as below. **Do not define new intermediate objects for this exercise; use pipes to chain together functions.**
 
-## Exercise 3. Unemployment in the US 1967-2015 (OPTIONAL)
-
-This exercise uses the dataset `economics` from the ggplot2 package. It was produced from US economic time series data available from <http://research.stlouisfed.org/fred2>. It describes the number of unemployed persons (`unemploy`), among other variables, in the US from 1967 to 2015.
-
-``` r
-head(economics) %>% kable()
-```
-
-| date       | pce   | pop    | psavert | uempmed | unemploy |
-|------------|-------|--------|---------|---------|----------|
-| 1967-07-01 | 506.7 | 198712 | 12.6    | 4.5     | 2944     |
-| 1967-08-01 | 509.8 | 198911 | 12.6    | 4.7     | 2945     |
-| 1967-09-01 | 515.6 | 199113 | 11.9    | 4.6     | 2958     |
-| 1967-10-01 | 512.2 | 199311 | 12.9    | 4.9     | 3143     |
-| 1967-11-01 | 517.4 | 199498 | 12.8    | 4.7     | 3066     |
-| 1967-12-01 | 525.1 | 199657 | 11.8    | 4.8     | 3018     |
-
-#### 3.1 Plot the trend in number of unemployed persons (`unemploy`) though time using the economics dataset shown above. And for this question only, **hide your code and only show the plot**.
-
-#### 3.2 Edit the plot title and axis labels of the previous plot appropriately. Make y axis start from 0. Change the background theme to what is shown below. (Hint: search for help online if needed)
+## 
