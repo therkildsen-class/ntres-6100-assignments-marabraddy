@@ -1,0 +1,35 @@
+---
+title: "Lab_5"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(knitr)
+
+# Read in the data
+titanic <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/Titanic.csv")
+
+```
+
+```{r}
+# Let's look at the top 5 lines of the dataset
+head(titanic, n = 5) |>
+  kable()
+
+# to get familiar with the dataset, use these functions
+# View(), dim(), colnames()
+```
+
+```{r}
+# You will see that the dataset includes the following variables:
+notes <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/Notes.csv")
+kable(notes)
+```
+
+#### **Question 1: According to Wikipedia, there was an estimated 2,224 passengers and crew onboard the Titanic when it sank. How many of them do we have information for in this dataset? Of the people we have data for, how many of them survived and how many did not? What is the overall survival rate?**
+
+```{r}
+
+```
