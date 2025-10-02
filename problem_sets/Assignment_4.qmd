@@ -5,6 +5,10 @@ format: gfm
 editor: visual
 ---
 
+```{r}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
 ## Load packages
 
 To start, load all the required packages with the following code. Install them if they are not installed yet.
@@ -28,7 +32,8 @@ economist_data <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-d
 #### 1.1 Show the first few rows of (`economist_data`).
 
 ```{r}
-head(economist_data)
+head(economist_data) |> 
+kable()
 ```
 
 #### 1.2 Explore the relationship between human development index (`HDI`) and corruption perception index (`CPI`) with a scatter plot as the following.
@@ -136,7 +141,8 @@ For the following exercise, **transform the data as instructed**. Try to use `ti
 
 ```{r}
 select(Theoph, Wt) |> 
-  head()
+  head() |> 
+  kable()
 ```
 
 #### 2.2 Rename the `Wt` column to `Weight` and `conc` column to `Concentration` in the `Theoph` dataset.
@@ -159,19 +165,22 @@ Theoph_data |>
 
 ```{r}
 Theoph_data |> 
-  arrange(Weight)
+  arrange(Weight) |> 
+  kable()
 ```
 
 ```{r}
 Theoph_data |> 
-  arrange (-Time)
+  arrange (-Time) |> 
+  kable()
 ```
 
 #### 2.5 Create a new column called `Quantity` that equals to `Wt` x `Dose` in the `Theoph` dataset. This will tell you the absolute quantity of drug administered to the subject (in mg). Replace the `Dose` variable with `Quantity`.
 
 ```{r}
 Theoph |> 
-  mutate(Quantity = Wt * Dose)
+  mutate(Quantity = Wt * Dose) |> 
+  kable()
 ```
 
 #### 2.6 Find the mean `conc` and sum of the `Dose` received by each test subject.
