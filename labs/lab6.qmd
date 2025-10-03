@@ -1,0 +1,101 @@
+---
+title: "Lab 6"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(knitr)
+
+# Read in the data
+whales <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/main/datasets/whales.csv")
+whales |> 
+  head() |>
+  kable()
+```
+
+```{r}
+View(whales)
+dim(whales)
+colnames(whales)
+```
+
+#### **Question 1. Create a new data frame that has one row per observer, per species and one single variable of all the information collected. Name this data frame `whales_long`.**
+
+```{r}
+whales_long <- whales |> 
+  pivot_longer(c(blue, humpback, southern_right, sei, fin, killer_whale, bowhead, grey), names_to = "species", values_to = "info")
+
+whales_long |>
+  head() |>
+  kable()
+```
+
+#### **Question 2. Starting from `whales_long`, create another data frame that includes only events for which there is information. Name this data frame `whales_clean`.**
+
+```{r}
+whales_clean <- whales_long |> 
+  filter(!is.na(info))
+
+whales_clean |> 
+  head() |> 
+  kable()
+```
+
+#### **Question 3. Starting from `whales_clean`, create another data frame with one variable per type of information, one piece of information per cell. Some cells might be empty. Name this data frame`whales_split`.**
+
+```{r}
+whales_split <- whales_clean |> 
+  separate(info, into = c("date", "outcome", "size", "ocean_location"), ",")
+
+whales_split |> 
+  head() |> 
+  kable()
+```
+
+#### **Question 4. Starting from `whales_split`, create another data frame in which all columns are parsed as instructed below. Name this data frame `whales_parsed`.**
+
+The columns should parsed to the following types\
+\* `observer`: double\
+\* `species`: character\
+\* `date`: date\
+\* `outcome`: character\
+\* `size`: integer\
+\* `ocean`: character
+
+```{r}
+whales_parsed <- whales_split |>
+  type_convert(col_types = cols(date = col_date(format = "%m/%d/%y"), size = col_integer()))
+```
+
+#### **Question 5. Using `whales_parsed`, print a summary table with: 1) number ship strikes by species, 2) average whale size by species, omitting NA values in the calculation.**
+
+```{r}
+whales_parsed |> 
+  group_by(species) |> 
+  summarize(strike_count = n(), average_size = mean(size, na.rm = T))
+
+whales_parsed |> 
+  head() |> 
+  kable()
+```
+
+#### **Question 6. Try to summarize as much information contained in `whales_parsed` as possible in one plot.**
+
+```{r}
+# Where are the ship strikes happening the most?
+whales_parsed |>
+  group_by(species) |> 
+  summarize(strike_count = n(), ocean_location) |> 
+  ggplot(mapping = aes(x = ocean_location, y = strike_count)) +
+  geom_bar()
+```
+
+```{r}
+whales_parsed |>
+  mutate(ocean = ifelse(ocean_location == "artic", "arctic", ocean_location)) |>
+  ggplot(aes(x=date, y = size, color=outcome)) +
+    geom_point() +
+    facet_grid(~ocean~species)
+```

@@ -34,7 +34,9 @@ msa_clean <- clean_names(msa)
 cbind(colnames(msa), colnames(msa_clean))
 
 
-# Parse functions
+
+# Parse Functions ---------------------------------------------------------
+
 
 parse_number("$100")
 
