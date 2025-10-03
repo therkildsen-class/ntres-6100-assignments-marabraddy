@@ -4,21 +4,19 @@ format: html
 editor: visual
 ---
 
+## **Exercise 1: Whale observation**
+
 ```{r}
 library(tidyverse)
 library(knitr)
+```
 
+```{r}
 # Read in the data
 whales <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/main/datasets/whales.csv")
 whales |> 
   head() |>
   kable()
-```
-
-```{r}
-View(whales)
-dim(whales)
-colnames(whales)
 ```
 
 #### **Question 1. Create a new data frame that has one row per observer, per species and one single variable of all the information collected. Name this data frame `whales_long`.**
@@ -84,18 +82,47 @@ whales_parsed |>
 #### **Question 6. Try to summarize as much information contained in `whales_parsed` as possible in one plot.**
 
 ```{r}
-# Where are the ship strikes happening the most?
-whales_parsed |>
-  group_by(species) |> 
-  summarize(strike_count = n(), ocean_location) |> 
-  ggplot(mapping = aes(x = ocean_location, y = strike_count)) +
-  geom_bar()
-```
-
-```{r}
 whales_parsed |>
   mutate(ocean = ifelse(ocean_location == "artic", "arctic", ocean_location)) |>
   ggplot(aes(x=date, y = size, color=outcome)) +
     geom_point() +
     facet_grid(~ocean~species)
+```
+
+## **Exercise 2: Baby names**
+
+```{r}
+library(babynames) # install.packages("babynames")
+
+babynames |>
+  head() |>
+  kable()
+```
+
+#### **Question 1: What are the 6 most popular boy names and girl names of all time? How has the popularity of each of these names changed over time?**
+
+```{r}
+top_6_male_names <- babynames |>
+  filter(sex == "M") |>
+  group_by(name) |>
+  summarize(total_count = sum(n)) |> 
+  arrange(-total_count)
+
+top_6_female_names <- babynames |> 
+  filter(sex == "F") |> 
+  group_by(name) |> 
+  summarize(total_count = sum(n)) |> 
+  arrange(-total_count)
+```
+
+#### **Question 2. What are the most popular boy names and girl names in each decade?**
+
+```{r}
+babynames |>
+  mutate(decade = floor(year/10)*10) |>
+  group_by(sex, decade, name) |>
+  summarize(total_count = sum(n)) |>
+  group_by(sex, decade) |>
+  slice_max(order_by = total_count, n = 1)
+
 ```
