@@ -1,8 +1,12 @@
 ---
 title: "Lab_5"
-format: html
+format: gfm
 editor: visual
 ---
+
+```{r}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
 
 ```{r}
 library(tidyverse)

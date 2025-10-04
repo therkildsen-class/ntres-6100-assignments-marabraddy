@@ -38,7 +38,7 @@ gapminder |>
   geom_line(mapping = aes(x = year, y = population, color = country))
 ```
 
-### **Question 2. Rank the following countries in infant mortality rate in 2015.** 
+### **Question 2. Rank the following countries in infant mortality rate in 2015.**
 
 Turkey, Poland, South Korea, Russia, Vietnam, South Africa
 

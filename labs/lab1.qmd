@@ -1,0 +1,21 @@
+---
+title: "Lab 1"
+author: "Mara"
+date: "8/28/2025"
+format: 
+  docx:
+    toc: true
+    toc-depth: 3
+editor: visual
+engine: knitr
+---
+
+## **Exercise 1: Basic formatting and code chunk options**
+
+There are `{r} nrow(cars)` observations in the cars dataset, and `{r} ncol(cars)` variables.
+
+![](https://www.detroitnews.com/gcdn/-mm-/941409055a936e04a2810513feb7531ea5006be2/c=0-224-2999-1918/local/-/media/2016/09/20/DetroitNews/DetroitNews/636099735494666570-2017-Chevrolet-BoltEV-030.jpg)
+
+## **Exercise 2: Document styling and output formats**
+
+## **Exercise 3: Make a CV**
