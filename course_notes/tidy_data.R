@@ -48,6 +48,9 @@ table3 |>
   separate(rate, into = c("cases", "population"), sep = "/", convert = TRUE)
 
 table3 |> 
+  separate(rate, into = c("cases", "population"), sep = "/")
+
+table3 |> 
   separate(year, into = c("century", "year"), sep = 1)
 
 table5 <- table3 |> 

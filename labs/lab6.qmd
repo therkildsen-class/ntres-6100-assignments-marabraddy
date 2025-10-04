@@ -123,6 +123,21 @@ babynames |>
   group_by(sex, decade, name) |>
   summarize(total_count = sum(n)) |>
   group_by(sex, decade) |>
-  slice_max(order_by = total_count, n = 1)
+  slice_max(order_by = total_count, n = 1) |> 
+  ggplot(mapping = aes(x = decade, y = total_count, color = sex)) +
+    geom_line(size = 1.5) +
+    geom_point(size = 3)
+```
 
+#### **Question 3. Continue to explore the `babynames` dataset.**
+
+```{r}
+babynames |>
+  mutate(decade = floor(year/10)*10) |>
+  group_by(sex, decade, name) |>
+  summarize(total_count = sum(n)) |>
+  group_by(sex, decade) |>
+  slice_max(order_by = total_count, n = 1) |> 
+  ggplot(mapping = aes(x = decade, y = total_count, fill = sex)) +
+    geom_col()
 ```
