@@ -52,8 +52,8 @@ kable(survived_count)
 titanic |>
   mutate(survived = ifelse(Survived == 0, "no", "yes")) |>
   ggplot(aes(x = survived)) +
-  geom_bar(aes(fill = survived)) +
-  geom_label(data = survived_count, aes(label = str_c(percentage, "%"), y = n/2))
+    geom_bar(aes(fill = survived)) +
+    geom_label(data = survived_count, aes(label = str_c(percentage, "%"), y = n/2))
 ```
 
 #### **Question 2. How many passengers on the Titanic were males and how many were females? What do you find when you break it down by ticket class?**
@@ -68,9 +68,9 @@ kable(sex_count)
 ```{r}
 sex_count |> 
   ggplot(aes(x = Sex, y = n)) +
-  geom_col(aes(fill = Sex)) +
-  geom_text(aes(label = n, y = n + 20)) +
-  ylab("count")
+    geom_col(aes(fill = Sex)) +
+    geom_text(aes(label = n, y = n + 20)) +
+    ylab("count")
 ```
 
 ```{r}
@@ -82,52 +82,137 @@ sex_class_count <- titanic |>
 kable(sex_class_count)
 ```
 
+```{r}
+sex_class_count |> 
+  ggplot(aes(x = Sex, y = n)) +
+    geom_col(aes(fill = Sex)) +
+    geom_text(aes(label = n, y = n + 20)) +
+    facet_wrap(~Pclass) +
+    ylab("count")
+```
+
 #### **Question 3. How many passengers of each sex survived and how many of them did not? What is the survival rate for passengers of each sex?**
 
 ```{r}
+sex_survival_count <- titanic |>
+  mutate(survived = ifelse(Survived==0, "no", "yes")) |>
+  group_by(Sex, survived) |>
+  count() |>
+  group_by(Sex) |>
+  mutate(percentage = round(n/sum(n)*100, 2))
 
+kable(sex_survival_count)
+```
+
+```{r}
+sex_survival_count |>
+  arrange(Sex, desc(survived)) |>
+  group_by(Sex) |>
+  mutate(label_y = cumsum(n) - 0.5 * n) |>
+  ggplot(aes(x=Sex)) +
+    geom_col(aes(fill = survived, y=n)) +
+    geom_label(aes(label = str_c(percentage, "%"), y = label_y))
 ```
 
 #### **Question 4. For how many passengers do we have age information (including estimated age)? For how many is the age information missing? What is the age distribution for passengers whose age information is available?**
 
 ```{r}
+age_info_count <- titanic |> 
+  mutate(age_info = ifelse(is.na(Age), "missing", "available")) |> 
+  count(age_info)
+kable(age_info_count)
+```
 
+```{r}
+age_info_count |>
+  ggplot(aes(x = age_info, y = n)) +
+    geom_col(aes(fill = age_info)) +
+    geom_label(aes(y = n + 40, label = n))
+```
+
+```{r}
+titanic |>
+  filter(!is.na(Age)) |>
+    ggplot(aes(x = Age)) +
+    geom_histogram(color = "purple")
 ```
 
 #### **Question 5. Show the age distribution per ticket class, per sex. What do you find?**
 
 ```{r}
-
+titanic |> 
+  filter(!is.na(Age)) |> 
+  ggplot(aes(x = Age, fill = Sex)) +
+    geom_histogram(color = "black") +
+    facet_wrap(~Pclass)
 ```
 
 #### **Question 6. How do the sex, ticket class, and age of a passenger affect their chance of survival? Try to use a single plot to answer this question.**
 
 ```{r}
-
+titanic |> 
+  filter(!is.na(Age)) |> 
+  mutate(survived = ifelse(Survived == 0, "no", "yes")) |> 
+  ggplot(aes(x = Age, fill = survived)) +
+    geom_histogram(color = "black") +
+    facet_grid(Sex~Pclass)
 ```
 
 #### **Question 7. Show the distribution of the number of family members (including siblings, spouses, parents, and children) that each passenger was accompanied by. Were most passengers travelling solo or with family?**
 
 ```{r}
+titanic |>
+  mutate(n_family = SibSp + Parch) |>
+  ggplot(aes(x = n_family)) +
+  geom_bar() +
+  scale_x_continuous(breaks = 0:10)
+```
 
+```{r}
+titanic |>
+  mutate(n_family = SibSp + Parch, with_family = ifelse(n_family > 0, "yes", "no")) |>
+  ggplot(aes(x = with_family)) +
+  geom_bar()
 ```
 
 #### **Question 8. Which ticket class did most of the largest families get? And which ticket class has the lowest proportion of female passengers who travelled solo out of all the female passengers in that class?**
 
 ```{r}
+titanic |>
+  mutate(n_family = SibSp + Parch) |>
+  ggplot(aes(x = n_family)) +
+  geom_bar() +
+  scale_x_continuous(breaks = 0:10) +
+  facet_wrap(~Pclass)
+```
 
+```{r}
+titanic |>
+  mutate(n_family = SibSp + Parch, ticket_class = as.character(Pclass)) |>
+  ggplot(aes(x = n_family, fill = ticket_class)) +
+  geom_bar(color = "black", position = "fill") +
+  scale_x_continuous(breaks = 0:10)
 ```
 
 #### **Question 9. In this dataset, the Fare variable does not represent the fare per person. Instead, each ticket number has a corresponding fare, and some passengers share one single ticket number. Therefore, the Fare variable is the total fare for a group of passengers sharing the same ticket number. Knowing this, calculate the average fare per person. You don’t need to show a table or a figure for this question, just show the code for the calculation.**
 
 ```{r}
-
+titanic |> 
+  group_by(Ticket) |> 
+  mutate(n_ticket = n(), fare_per_ticket = Fare/n_ticket) |> 
+  ungroup() |> 
+  summarize(average_fare = mean(fare_per_ticket))
 ```
 
 #### **Question 10. What is the distribution of the per-ticket fare for each ticket class?**
 
 ```{r}
-
+titanic |>
+  group_by(Ticket) |>
+  mutate(n_ticket = n(), fare_per_ticket = Fare/n_ticket, ticket_class = as.character(Pclass)) |>
+  ggplot(aes(x = fare_per_ticket)) +
+  geom_histogram(bins = 100) +
+  facet_wrap(~ticket_class)
 ```
 
 ## **Exercise 2: Independent data exploration**
