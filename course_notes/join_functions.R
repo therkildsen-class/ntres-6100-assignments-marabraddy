@@ -69,10 +69,8 @@ flights2 |>
 flights2 |> 
   left_join(planes, join_by(tailnum), suffix = c("_flight", "_planes"))
 
-
 flights2 |> 
   left_join(airports, join_by(origin == faa))
-
 
 airports2 <- airports |> 
   select(faa, name, lat, lon)
@@ -82,4 +80,25 @@ flights2 |>
   left_join(airports2, join_by(dest == faa), suffix = c("_origin", "_dest"))
 
 
+airports |> 
+  semi_join(flights2, join_by(faa == origin))
 
+flights2 |> 
+  anti_join(airports, join_by(dest == faa) |> 
+  distinct(dest)
+
+
+planes_gt100 <- flights2 |> 
+  group_by(tailnum) |> 
+  summarize(count = n()) |> 
+  filter(count > 100)
+# OR we can use...
+planes_gt100 <- flights2 |> 
+  count(tailnum) |> 
+  filter(n > 100)
+
+flights |> 
+  semi_join(planes_gt100)
+
+
+            
