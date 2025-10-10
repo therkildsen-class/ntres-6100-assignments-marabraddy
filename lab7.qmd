@@ -11,6 +11,7 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 ```{r}
 library(tidyverse)
 library(knitr)
+library(maps) #install.packages("maps")
 library(nycflights13) # install.packages("nycflights13")
 
 flights |>
@@ -18,8 +19,161 @@ flights |>
   kable()
 ```
 
+## **Exercise 1: Exploration of the `nycflights13` data**
+
 #### **Question 1: Compute the average delay by destination, then join on the `airports` data frame so you can show the spatial distribution of delays. Here’s an easy way to draw a map of the United States:**
 
 ```{r}
+airports |>
+  semi_join(flights, c("faa" = "dest")) |>
+  ggplot(aes(lon, lat)) +
+    borders("state") +
+    geom_point() +
+    coord_quickmap()
+```
 
+```{r}
+avg_dest_delays <- flights |> 
+  group_by(dest) |> 
+  summarize(delays = mean(arr_delay, na.rm = TRUE)) |> 
+  inner_join(airports, by = c(dest = "faa"))
+```
+
+```{r}
+avg_dest_delays |>
+  ggplot(aes(lon, lat, colour = delays)) +
+  borders("state") +
+  geom_point() +
+  coord_quickmap()
+```
+
+#### **Question 2: Is there a relationship between the age of a plane and its delays?**
+
+```{r}
+plane_cohorts <- inner_join(flights,
+                            select(planes, tailnum, year),
+                            by = "tailnum",
+                            suffix = c("_flight", "_plane")) |> 
+  mutate(age = year_flight - year_plane) |>
+  filter(!is.na(age)) |>
+  group_by(age) |>
+  summarize(
+    dep_delay_mean = mean(dep_delay, na.rm = TRUE),
+    arr_delay_mean = mean(arr_delay, na.rm = TRUE)
+  )
+```
+
+```{r}
+# ORIGINAL - what if
+plane_cohorts <- inner_join(flights,
+                            select(planes, tailnum, year),
+                            by = "tailnum",
+                            suffix = c("_flight", "_plane")) |> 
+  mutate(age = year_flight - year_plane) |>
+  filter(!is.na(age)) |>
+  mutate(age = if_else(age > 25, 25L, age)) |> #what if I leave this out?
+  group_by(age) |>
+  summarize(
+    dep_delay_mean = mean(dep_delay, na.rm = TRUE),
+    arr_delay_mean = mean(arr_delay, na.rm = TRUE)
+  )
+```
+
+```{r}
+ggplot(plane_cohorts, aes(x = age, y = dep_delay_mean)) +
+  geom_point() +
+  scale_x_continuous("Age of plane (years)", breaks = seq(0, 30, by = 10)) +
+  scale_y_continuous("Mean Departure Delay (minutes)")
+```
+
+#### **Question 3: What weather conditions make it more likely to see a delay?**
+
+```{r}
+flights_weather <- flights |> 
+  inner_join(weather, by = c("origin", "year", "month", "day", "hour"))
+
+# How does Wind Speed make it more likely to see a delay?
+flights_weather |> 
+  group_by(wind_speed) |> 
+  summarize(delay = mean(dep_delay, na.rm = TRUE)) |> 
+  ggplot(aes(x = wind_speed, y = delay)) +
+  geom_col()
+
+# How does Precipitaion make it more likely to see a delay?
+flights_weather |> 
+  group_by(precip) |> 
+  summarize(delay = mean(dep_delay, na.rm = TRUE)) |> 
+  ggplot(aes(x = precip, y = delay)) +
+  geom_col()
+```
+
+## **Exercise 2: Baby names**
+
+```{r}
+library(babynames) # install.packages("babynames")
+
+babynames |>
+  head() |>
+  kable()
+```
+
+#### **Question 1: What are the 6 most popular boy names and girl names of all time? How has the popularity of each of these names changed over time? This time, use the `slice_max()` function in combination with a `join` function to answer this question.**
+
+```{r}
+top_babynames <- babynames |> 
+  group_by(sex, name) |> 
+  summarize(total_count = sum(n)) |> 
+  group_by(sex) |>
+  slice_max(order_by = total_count, n = 6)
+  
+```
+
+```{r}
+babynames |> 
+  semi_join(top_babynames, by = c("sex", "name")) |>
+  ggplot(aes(x = year, y = prop, group = name, color = sex)) +
+  geom_line() +
+  facet_wrap(~name)
+```
+
+#### **Question 2. Find the names that have not appeared in this dataset until 2010, but were used more than 1000 times 2010-2017 (boys and girls combined). Do you recognize any pop culture influence in these?**
+
+```{r}
+new_names <- babynames |> 
+  mutate(threshold = ifelse(year >= 2010, "after", "before")) |>
+  group_by(name, threshold) |> 
+  summarize(total_count = sum(n)) |>
+  pivot_wider(names_from = threshold,
+              values_from = total_count,
+              names_prefix = "count_") |> 
+  mutate_all(~replace(., is.na(.), 0)) |>
+  filter(count_before == 0, count_after >= 1000) 
+
+new_names |> 
+  kable()
+```
+
+```{r}
+babynames |>
+  filter(name %in% new_names$name) |>
+  ggplot(aes(x = year, y = n, color = sex)) +
+  geom_line() +
+  facet_wrap(~name)
+```
+
+#### **Question 3. Find the 12 most popular unisex names. How have the proportion of girls for each of them changed over time?**
+
+```{r}
+unisex_names <- babynames |> 
+  group_by(name, sex) |> 
+  summarize(total_count = sum(n)) |> 
+  pivot_wider(names_from = sex, values_from = total_count, names_prefix = "count_") |> 
+  filter(!is.na(count_M), !is.na(count_F)) |>
+  mutate(total_count = count_M + count_F, f_proportion = count_F / total_count) |>
+  filter(f_proportion < 0.9, f_proportion > 0.1) |>
+  arrange(-total_count)
+
+unisex_names |>
+  head(12) |>
+  kable()
 ```
