@@ -1,0 +1,25 @@
+---
+title: "Lab_7"
+format: gfm
+editor: visual
+---
+
+```{r}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+```{r}
+library(tidyverse)
+library(knitr)
+library(nycflights13) # install.packages("nycflights13")
+
+flights |>
+  head() |>
+  kable()
+```
+
+#### **Question 1: Compute the average delay by destination, then join on the `airports` data frame so you can show the spatial distribution of delays. Here’s an easy way to draw a map of the United States:**
+
+```{r}
+
+```
