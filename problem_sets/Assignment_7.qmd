@@ -21,5 +21,22 @@ library(dslabs)
 **1a.** Use a `join` function to combine the `murders` dataset, which contains information on population size, and the`results_us_election_2016` dataset, which contains information on the number of electoral votes. Name this new dataset `q_1a`, and show its first 6 rows.
 
 ```{r}
+q_1a <- murders |> 
+  left_join(results_us_election_2016)
+  
+q_1a |> 
+  head() |> 
+  kable()
+```
 
+**1b.** Add a new variable in the `q_1a` dataset to indicate which candidate won in each state, and remove the columns `abb`, `region`, and`total`. Name this new dataset `q_1b`, and show its first 6 rows.
+
+```{r}
+q_1b <- q_1a |> 
+  select(state, population, electoral_votes, clinton, trump, johnson, stein, mcmullin, others) |> 
+  mutate(winner = if_else(clinton > trump, "clinton", "trump"))
+
+q_1b |> 
+  head() |> 
+  kable()
 ```
