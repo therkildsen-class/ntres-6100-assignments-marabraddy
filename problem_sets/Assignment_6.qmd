@@ -117,12 +117,8 @@ kable(weather_station_notes)
 raw_weather <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/2015y_Weather_Station.csv", col_types = cols(.default = "c"))
 
 raw_weather |> 
-
-
-raw_weather |> 
   pivot_longer("00":"23", names_to = "hour") |> 
-  pivot_wider(names_from = item, values_from = hour) |> 
-  mutate(across(c(AMB_TEMP:WS_HR)), as.integer)
-
+  pivot_wider(names_from = item, values_from = value) |>
+  mutate("AMB_EMP:WS_HR" = as.integer("AMB_TEMP:WS_HR"))
 
 ```
