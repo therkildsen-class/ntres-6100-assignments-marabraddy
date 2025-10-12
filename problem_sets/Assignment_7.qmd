@@ -1,0 +1,25 @@
+---
+title: "Assignment_7"
+format: gfm
+editor: visual
+---
+
+```{r}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+```{r}
+library(tidyverse)
+library(knitr)
+library(dslabs)
+```
+
+## Excercise: 2016 election result and polling
+
+### Question 1. What is the relationship between the population size and the number of electoral votes each state has?
+
+**1a.** Use a `join` function to combine the `murders` dataset, which contains information on population size, and the`results_us_election_2016` dataset, which contains information on the number of electoral votes. Name this new dataset `q_1a`, and show its first 6 rows.
+
+```{r}
+
+```
