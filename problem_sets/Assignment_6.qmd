@@ -118,7 +118,8 @@ raw_weather <- read_csv("https://raw.githubusercontent.com/nt246/NTRES-6100-data
 
 raw_weather |> 
   pivot_longer("00":"23", names_to = "hour") |> 
-  pivot_wider(names_from = item, values_from = value) |>
-  mutate("AMB_EMP:WS_HR" = as.integer("AMB_TEMP:WS_HR"))
+  pivot_wider(names_from = item, values_from = value) |> 
+  
+raw_weather |> mutate(date = as.Date(date, format = "%Y-%m-%d")
 
 ```
