@@ -106,3 +106,42 @@ buoy_1988 <- read_csv('https://raw.githubusercontent.com/nt246/NTRES-6100-data-s
 buoy_1989 <- read_csv('https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/buoydata/44013_1989.csv', na = c("99", "999", "99.00", "999.0"))
 buoy_1990 <- read_csv('https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/buoydata/44013_1990.csv', na = c("99", "999", "99.00", "999.0"))
 ```
+
+Answer: *Write your response here.*
+
+#### 2.2 Complete the skeleton of the for loop below, which uses the `str_c()` function to print out the path to the buoy 44013 data file from year `start` to `end`
+
+```{r}
+start <- 1987
+end <- 1990
+for (year in start:end){
+  path <- str_c("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/buoydata/44013_", year, ".csv")
+  print(path)
+}
+```
+
+#### 2.3 Complete the skeleton of the for loop below, which reads the buoy 44013 data file from year `start` to `end` and combine them together.
+
+**Hint:** `bind_rows()` could be useful for this question.
+
+```{r}
+start <- 1987
+end <- 1990
+df_combined <- NULL
+for (year in start:end){
+  path <- str_c(str_c("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/buoydata/44013_", year, ".csv"))
+  df <- read_csv('https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/buoydata/44013_1987.csv', na = c("99", "999", "99.00", "999.0"))
+  df_combined <- bind_rows(buoy_1987, buoy_1988, buoy_1989, buoy_1990)
+}
+dim(df_combined)
+```
+
+#### 2.4 Building on the workflow that you used in 2.1 - 2.3, use a for loop to read in, clean up, and summarize the buoy data from all years from 1987 to 1992 using a dplyr workflow.
+
+Within the loop, for each year, **read** in the data, **select** only the columns `YY` (year), `MM` (month), `WVHT` (wave heights), `WTMP`(temperatures) and **rename** these columns to something understandable, and **summarize** monthly averaged wave heights and temperatures throughout that year. **Combine** these summary tables from different years together and **plot the variation of these monthly averaged values through time** as shown below.
+
+There are multiple ways to do this, and for this question, you may as well combine all the raw data in a for loop and clean it up after the loop. We recommend you to do the cleanup within the loop though as a chance to practice. In the next (optional) question, however, it is necessary to clean up the data in the loop before you can combine them.
+
+```{r}
+
+```
