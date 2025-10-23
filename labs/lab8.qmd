@@ -137,5 +137,48 @@ for (x in 1:n){
 #### **2.2 Building on the last question, come up with one additional rule and apply it to your random paragraph generator.**
 
 ```{r}
-
+set<-c(letters, " ", ",", "!")
+i=1
+n=1000
+set.seed(24)
+while(i<=n){
+  if(i==1){
+    current_letter <- sample(LETTERS, 1)
+    meticulous_hysterical_monkey <- current_letter
+  } else if(i==n-2){
+    if(last_letter == "!"){
+      current_letter <- paste0(" ", sample(LETTERS, 1))
+      i <- i+1
+    } else if(last_letter == ","){
+      current_letter <- paste0(" ", sample(letters, 1))
+      i <- i+1
+    } else if(last_letter == " "){
+      current_letter <- sample(letters, 1)
+    } else {
+      current_letter <- sample(c(letters, " "), 1)
+    }
+    meticulous_hysterical_monkey <- paste0(meticulous_hysterical_monkey, current_letter)
+  } else if(i==n-1){
+    current_letter <- sample(letters, 1)
+    meticulous_hysterical_monkey <- paste0(meticulous_hysterical_monkey, current_letter)
+  } else if (i==n) {
+    current_letter <- "!"
+    meticulous_hysterical_monkey <- paste0(meticulous_hysterical_monkey, current_letter)
+  } else {
+    if(last_letter == "!"){
+      current_letter <- paste0(" ", sample(LETTERS, 1))
+      i <- i+1
+    } else if(last_letter == ","){
+      current_letter <- paste0(" ", sample(letters, 1))
+      i <- i+1
+    } else if(last_letter == " "){
+      current_letter <- sample(letters, 1)
+    } else {
+      current_letter <- sample(set, 1)
+    }
+    meticulous_hysterical_monkey <- paste0(meticulous_hysterical_monkey, current_letter)
+  }
+  last_letter <- current_letter
+  i <- i+1
+}
 ```
