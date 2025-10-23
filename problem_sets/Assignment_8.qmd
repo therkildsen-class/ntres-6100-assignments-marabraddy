@@ -10,6 +10,7 @@ knitr::opts_chunk$set(warning = FALSE, message = FALSE)
 
 ```{r}
 library(tidyverse)
+library(lubridate)
 ```
 
 ## Exercise 1: Body mass estimation using vectorization vs. for loop
@@ -19,10 +20,13 @@ There are two major types of approaches to perform multiple operations in R: [ve
 The for loop approach to achieve the same task (create a new vector z that is the sum of vectors x and y), on the other hand, takes the following form:
 
 ```{r}
-z <- NULL
+  x <- 1:50
+  y <- 51:100
+  z <- NULL
 for (i in 1:length(x)){
   z <- c(z, x[i] + y[i])
 }
+z
 ```
 
 In this case, the computer loops through each element of x and y and performs the operation **sequentially**, resulting in a significantly longer runtime. Let’s now try to quantify this difference in runtime in this exercise.
@@ -107,7 +111,7 @@ buoy_1989 <- read_csv('https://raw.githubusercontent.com/nt246/NTRES-6100-data-s
 buoy_1990 <- read_csv('https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/buoydata/44013_1990.csv', na = c("99", "999", "99.00", "999.0"))
 ```
 
-Answer: *Write your response here.*
+Answer: The code is the same across every line except where we are naming the dataframe to differentiate which year's data we are looking at.
 
 #### 2.2 Complete the skeleton of the for loop below, which uses the `str_c()` function to print out the path to the buoy 44013 data file from year `start` to `end`
 
@@ -129,9 +133,9 @@ start <- 1987
 end <- 1990
 df_combined <- NULL
 for (year in start:end){
-  path <- str_c(str_c("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/buoydata/44013_", year, ".csv"))
+  path <- str_c("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/buoydata/44013_", year, ".csv")
   df <- read_csv('https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/buoydata/44013_1987.csv', na = c("99", "999", "99.00", "999.0"))
-  df_combined <- bind_rows(buoy_1987, buoy_1988, buoy_1989, buoy_1990)
+  df_combined <- bind_rows(df_combined, df)
 }
 dim(df_combined)
 ```
@@ -143,5 +147,38 @@ Within the loop, for each year, **read** in the data, **select** only the column
 There are multiple ways to do this, and for this question, you may as well combine all the raw data in a for loop and clean it up after the loop. We recommend you to do the cleanup within the loop though as a chance to practice. In the next (optional) question, however, it is necessary to clean up the data in the loop before you can combine them.
 
 ```{r}
+start <- 1987
+end <- 1990
+df_combined <- NULL
 
+for (year in start:end){
+  path <- str_c("https://raw.githubusercontent.com/nt246/NTRES-6100-data-science/master/datasets/buoydata/44013_", year, ".csv")
+  
+  df<- read_csv(path) |> 
+  select(YY, MM, WVHT, WTMP) |> 
+  rename(year = YY, month = MM, wave_heights = WVHT, temp = WTMP) |> 
+  group_by(month, year) |> 
+  summarize(avg_temp = mean(temp), avg_wave_height = mean(wave_heights)) 
+  df_combined <- bind_rows(df_combined, df)
+  
+}
+
+```
+
+```{r}
+df_combined_unite <- df_combined |> 
+  unite(col = "year_month", year, month, sep = "-") |> 
+  ggplot(mapping = aes(x = year_month, y = avg_wave_height)) +
+    geom_line() +
+    geom_point()
+print(df_combined_unite)
+```
+
+```{r}
+df_combined_unite <- df_combined |> 
+  unite(col = "year_month", year, month, sep = "-") |> 
+  ggplot(mapping = aes(x = year_month, y = avg_temp)) +
+    geom_line() +
+    geom_point()
+print(df_combined_unite)
 ```
