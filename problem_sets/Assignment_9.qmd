@@ -1,0 +1,74 @@
+---
+title: "Assignment_9"
+format: gfm
+editor: visual
+---
+
+```{r}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE)
+```
+
+```{r}
+library(tidyverse)
+library(knitr)
+```
+
+## Exercise 1: Unit converter
+
+**1.1 Write a function that can convert Fahrenheit to Celsius**, based on the following fomula: `C = (F - 32) * 5 / 9`
+
+Take your function for a spin, does it return the correct values?
+
+32 F = 0 C
+
+```{r}
+F_to_C <- function(F){
+  C <- (F - 32) * 5 / 9
+  return(C)
+}
+
+convert_F_to_C(32)
+```
+
+50 F = 10 C
+
+```{r}
+F_to_C <- function(F){
+  C <- (F - 32) * 5 / 9
+  return(C)
+}
+
+convert_F_to_C(50)
+```
+
+212 F = 100 C
+
+```{r}
+F_to_C <- function(F){
+  C <- (F - 32) * 5 / 9
+  return(C)
+}
+
+convert_F_to_C(212)
+```
+
+**1.2** A student came from ‘tropical Canada’. She doesn’t like the cold but she really didn’t like it when it’s hot. Although she wanted to know what the temperature is in Celsius when the US weather channel reported it in Fahrenheit, there are certain points at which it was just too cold or too hot for to to care about the exact value. **Modify the f_to_c function below to print the following**, and check if your function works properly using the input of **-10 F, 60 F, and 90 F**.
+
+-   If the temperature is less than -20 C, print “Don’t bother going out.”
+
+-   If the temperature is greater than 30 C, print “I’m moving back to Canada.”
+
+-   If the temperature is between -20 C and 30 C, print the temperature in Celsius.
+
+```{r}
+F_to_C_message <- function(F){
+  C <- case_when(
+    ((F - 32) * 5 / 9) < -20 ~ "Don't bother going out", 
+    ((F - 32) * 5 / 9) > 30 ~ "I'm moving back to Canada",
+    .default = C
+    )
+  return(C)
+}
+
+F_to_C_message(60)
+```
