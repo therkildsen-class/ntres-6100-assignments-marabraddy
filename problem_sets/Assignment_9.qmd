@@ -64,11 +64,59 @@ convert_F_to_C(212)
 F_to_C_message <- function(F){
   C <- case_when(
     ((F - 32) * 5 / 9) < -20 ~ "Don't bother going out", 
-    ((F - 32) * 5 / 9) > 30 ~ "I'm moving back to Canada",
-    .default = C
+    ((F - 32) * 5 / 9) > 30 ~ "I'm moving back to Canada"
     )
   return(C)
 }
 
-F_to_C_message(60)
+F_to_C_message(-10)
 ```
+
+```{r}
+F_to_C_message <- function(F){
+  C <- case_when(
+    ((F - 32) * 5 / 9) < -20 ~ "Don't bother going out", 
+    ((F - 32) * 5 / 9) > 30 ~ "I'm moving back to Canada"
+    )
+  return(C)
+}
+
+F_to_C_message(90)
+```
+
+## Exercise 2: Set operation
+
+The R function `setdiff(x,y)` returns the elements of a vector x that are not in y. For example, say x is a list of singers who can reach very high registers, and y is a list of musicians who died in 2016. `setdiff(x, y)` would return a list of singers with high voices who did not die in 2016.
+
+```{r}
+x <- c("prince", "mj", "sam cook", "whitney", "dolly")
+y <- c("sharon jones", "prince", "bowie", "leonard cohen", "phife dawg")
+setdiff(x,y)
+```
+
+However, sometimes you want a function to return the elements that are in x or y but not both. Here, **write such a function**, and use your custom function to **find the names of singers who either have high voices, but did not die in 2016, OR who died in 2016 but do not have high voices.**
+
+Your function will need to work for any vectors, not just the ones in this example. The output should be a single vector, not two vectors.
+
+```{r}
+unique_element <- function(x,y){
+  x <- c("prince", "mj", "sam cook", "whitney", "dolly")
+y <- c("sharon jones", "prince", "bowie", "leonard cohen", "phife dawg")
+setdiff(x,y)
+}
+
+unique_element(x,y)
+```
+
+## Exercise 3: Fuel Efficiency of Car Models
+
+This exercise uses the `mtcars` dataset, which is available in base R. It was extracted from the 1974 Motor Trend US magazine, and comprises fuel consumption and 10 aspects of automobile design and performance for 32 automobiles (1973–74 models). Let’s first convert `mtcars` to tibble format such that the row names become a column named “model”.
+
+```{r}
+mtcars_tbl <- as_tibble(mtcars, rownames = "model")
+mtcars_tbl %>%
+  head() %>%
+  kable()
+```
+
+From `mtcars_tbl`, reproduce the following plot, which shows the miles per gallon (`mpg`) of car models on the x axis (see hints below). Different models are ordered on the y axis according to their `mpg` and their names are shown next to the data points. Also, the size of each data point maps to its horse power (`hp`), and the color maps to number of cylinders (`cyl`).
